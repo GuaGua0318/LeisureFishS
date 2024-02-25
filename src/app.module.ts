@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { ArticlesModule } from './articles/articles.module';
+import { Articles } from './articles/entities/article.entity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { JwtModule } from '@nestjs/jwt';
       database: 'login_test',
       synchronize: true,
       logging: true,
-      entities: [User],
+      entities: [User, Articles],
       poolSize: 10,
       connectorPackage: 'mysql2',
       extra: {
@@ -32,6 +34,7 @@ import { JwtModule } from '@nestjs/jwt';
       },
     }),
     UserModule,
+    ArticlesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

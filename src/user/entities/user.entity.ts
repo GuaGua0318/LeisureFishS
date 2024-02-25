@@ -1,7 +1,9 @@
+import { Articles } from 'src/articles/entities/article.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -32,4 +34,7 @@ export class User {
     comment: '更新时间',
   })
   updateTime: Date;
+
+  @OneToMany(() => Articles, (articles) => articles.user)
+  article: Articles[];
 }

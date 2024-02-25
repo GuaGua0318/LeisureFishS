@@ -9,12 +9,14 @@ import {
   Inject,
   Res,
   ValidationPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { MapTestInterceptor } from 'src/map-test.interceptor';
 
 @Controller('user')
 export class UserController {
@@ -24,6 +26,7 @@ export class UserController {
   private jwtService: JwtService;
 
   @Post('login')
+  @UseInterceptors(MapTestInterceptor)
   async login(
     @Body(ValidationPipe) user: LoginDto,
     @Res({ passthrough: true }) res: Response,
@@ -36,14 +39,17 @@ export class UserController {
           username: foundUser.username,
         },
       });
-      res.setHeader('token', token);
-      return 'login success';
+      return {
+        status: 'success',
+        token: token,
+      };
     } else {
       return 'login fail';
     }
   }
 
   @Post('register')
+  @UseInterceptors(MapTestInterceptor)
   async register(@Body(ValidationPipe) user: RegisterDto) {
     return await this.userService.register(user);
   }
