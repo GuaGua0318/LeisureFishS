@@ -36,5 +36,5 @@ export class User {
   updateTime: Date;
 
   @OneToMany(() => Articles, (articles) => articles.user)
-  article: Articles[];
+  articles: Articles[];
 }

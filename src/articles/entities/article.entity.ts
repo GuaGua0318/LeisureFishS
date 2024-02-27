@@ -6,12 +6,20 @@ export class Articles {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    length: 50,
+    comment: '标题',
+  })
   title: string;
 
-  @Column()
+  @Column({
+    length: 50,
+    comment: '内容',
+  })
   content: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, {
+    cascade: true,
+  })
   user: User;
 }
