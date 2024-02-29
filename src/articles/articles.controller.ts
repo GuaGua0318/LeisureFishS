@@ -36,4 +36,11 @@ export class ArticlesController {
     const data = await this.articlesService.getArticles();
     return data;
   }
+
+  @Get('detail/:id')
+  @UseInterceptors(MapTestInterceptor)
+  async articlesDetail(@Param('id') id: string) {
+    const res = await this.articlesService.articleDetail(id);
+    return res;
+  }
 }

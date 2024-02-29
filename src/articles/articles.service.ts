@@ -38,4 +38,15 @@ export class ArticlesService {
       return error;
     }
   }
+
+  async articleDetail(id: string) {
+    try {
+      const article = await this.manager.findOne(Articles, {
+        where: { id: Number(id) },
+      });
+      return article;
+    } catch (error) {
+      return error;
+    }
+  }
 }
