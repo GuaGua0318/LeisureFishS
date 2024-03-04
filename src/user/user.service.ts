@@ -45,13 +45,14 @@ export class UserService {
     const foundUser = await this.userRepository.findOneBy({
       username: user.username,
     });
-
     if (!foundUser) {
       throw new HttpException('用户名不存在', 200);
     }
     if (foundUser.password !== md5(user.password)) {
       throw new HttpException('密码错误', 200);
     }
+    foundUser.isOnline = true;
+    await this.userRepository.update(foundUser.id, foundUser);
     return foundUser;
   }
 }

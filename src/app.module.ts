@@ -7,6 +7,7 @@ import { User } from './user/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ArticlesModule } from './articles/articles.module';
 import { Articles } from './articles/entities/article.entity';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { Articles } from './articles/entities/article.entity';
     }),
     UserModule,
     ArticlesModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

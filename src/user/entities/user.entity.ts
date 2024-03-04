@@ -25,6 +25,12 @@ export class User {
   })
   password: string;
 
+  @Column({
+    default: false,
+    comment: '在线状态',
+  })
+  isOnline: boolean;
+
   @CreateDateColumn({
     comment: '创建时间',
   })
