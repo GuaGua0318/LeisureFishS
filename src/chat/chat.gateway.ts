@@ -6,39 +6,48 @@ import {
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
+import { UseInterceptors } from '@nestjs/common';
+import { MapTestInterceptor } from 'src/map-test.interceptor';
 
 @WebSocketGateway(3001, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
-  namespace: 'chat',
+  // namespace: 'chat',
 })
 export class ChatGateway {
   constructor(private readonly chatService: ChatService) {}
 
-  @SubscribeMessage('createChat')
-  create(@MessageBody() createChatDto: CreateChatDto) {
-    return this.chatService.create(createChatDto);
+  // @SubscribeMessage('createChat')
+  // create(@MessageBody() createChatDto: CreateChatDto) {
+  //   return this.chatService.create(createChatDto);
+  // }
+
+  @SubscribeMessage('isOnline')
+  @UseInterceptors(MapTestInterceptor)
+  async findAll() {
+    // return this.chatService.isOnline();
+    try {
+      const result = await this.chatService.isOnline();
+      return result;
+    } catch (error) {
+      return error;
+    }
   }
 
-  @SubscribeMessage('findAllChat')
-  findAll() {
-    return this.chatService.findAll();
-  }
+  // @SubscribeMessage('findOneChat')
+  // findOne(@MessageBody() id: number) {
+  //   return this.chatService.findOne(id);
+  // }
 
-  @SubscribeMessage('findOneChat')
-  findOne(@MessageBody() id: number) {
-    return this.chatService.findOne(id);
-  }
+  // @SubscribeMessage('updateChat')
+  // update(@MessageBody() updateChatDto: UpdateChatDto) {
+  //   return this.chatService.update(updateChatDto.id, updateChatDto);
+  // }
 
-  @SubscribeMessage('updateChat')
-  update(@MessageBody() updateChatDto: UpdateChatDto) {
-    return this.chatService.update(updateChatDto.id, updateChatDto);
-  }
-
-  @SubscribeMessage('removeChat')
-  remove(@MessageBody() id: number) {
-    return this.chatService.remove(id);
-  }
+  // @SubscribeMessage('removeChat')
+  // remove(@MessageBody() id: number) {
+  //   return this.chatService.remove(id);
+  // }
 }
