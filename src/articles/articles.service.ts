@@ -4,7 +4,6 @@ import { Articles } from './entities/article.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { WriteArticleDto } from './dto/writearticle.dto';
 import { User } from 'src/user/entities/user.entity';
-import { AppDataSource } from '../data-source';
 
 @Injectable()
 export class ArticlesService {

@@ -8,6 +8,7 @@ import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { UseInterceptors } from '@nestjs/common';
 import { MapTestInterceptor } from 'src/map-test.interceptor';
+import { SendChatDto } from './dto/send-chat.dto';
 
 @WebSocketGateway(3001, {
   cors: {
@@ -19,10 +20,16 @@ import { MapTestInterceptor } from 'src/map-test.interceptor';
 export class ChatGateway {
   constructor(private readonly chatService: ChatService) {}
 
-  // @SubscribeMessage('createChat')
-  // create(@MessageBody() createChatDto: CreateChatDto) {
-  //   return this.chatService.create(createChatDto);
-  // }
+  @SubscribeMessage('sendMessage')
+  @UseInterceptors(MapTestInterceptor)
+  async create(@MessageBody() sendChatDto: SendChatDto) {
+    try {
+      const result = await this.chatService.sendMessage(sendChatDto);
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
 
   @SubscribeMessage('isOnline')
   @UseInterceptors(MapTestInterceptor)
@@ -36,9 +43,9 @@ export class ChatGateway {
     }
   }
 
-  // @SubscribeMessage('findOneChat')
-  // findOne(@MessageBody() id: number) {
-  //   return this.chatService.findOne(id);
+  // @SubscribeMessage('getMessage')
+  // findOne(@MessageBody() @MessageBody() sendChatDto: SendChatDto) {
+  //   // return this.chatService.find(id);
   // }
 
   // @SubscribeMessage('updateChat')

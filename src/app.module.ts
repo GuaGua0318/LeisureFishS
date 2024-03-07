@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ArticlesModule } from './articles/articles.module';
 import { Articles } from './articles/entities/article.entity';
 import { ChatModule } from './chat/chat.module';
+import { Chat } from './chat/entities/chat.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ChatModule } from './chat/chat.module';
       database: 'login_test',
       synchronize: true,
       logging: true,
-      entities: [User, Articles],
+      entities: [User, Articles, Chat],
       poolSize: 10,
       connectorPackage: 'mysql2',
       extra: {
