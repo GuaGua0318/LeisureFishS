@@ -6,6 +6,7 @@ import { EntityManager } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { SendChatDto } from './dto/send-chat.dto';
 import { Chat } from './entities/chat.entity';
+import { ReceiveChatDto } from './dto/receive-chat.dto';
 
 @Injectable()
 export class ChatService {
@@ -22,6 +23,22 @@ export class ChatService {
     } catch (error) {
       return error;
     }
+  }
+
+  async receiveMessage(receiveChatDto: ReceiveChatDto) {
+    const message = await this.manager.find(Chat, {
+      where: {
+        sendUser: receiveChatDto.sendUser,
+        receiveUser: receiveChatDto.receiveUser,
+      },
+    });
+    const message2 = await this.manager.find(Chat, {
+      where: {
+        sendUser: receiveChatDto.receiveUser,
+        receiveUser: receiveChatDto.sendUser,
+      },
+    });
+    return [...message, ...message2].sort((a, b) => a.id - b.id);
   }
 
   async isOnline() {
